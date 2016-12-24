@@ -1,11 +1,9 @@
-apply plugin: 'com.android.application'
-apply plugin: 'com.android.application'
 buildscript {
     repositories {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.2'
+        classpath 'com.android.tools.build:gradle:2.2.3'
     }
 }
 apply plugin: 'com.android.application'
@@ -17,11 +15,32 @@ repositories {
         url 'http://4thline.org/m2'
     }
 }
+
+dependencies {
+
+    // Cling
+    compile group: 'org.fourthline.cling', name: 'cling-core', version:'2.1.0'
+    //compile group: 'org.fourthline.cling', name: 'cling-support', version:'2.1.0'
+    compile group: 'org.eclipse.jetty', name: 'jetty-server', version:'8.1.18.v20150929'
+    compile group: 'org.eclipse.jetty', name: 'jetty-servlet', version:'8.1.18.v20150929'
+    compile group: 'org.eclipse.jetty', name: 'jetty-client', version:'8.1.18.v20150929'
+    compile group: 'org.slf4j', name: 'slf4j-jdk14', version:'1.7.14'
+
+    compile('de.psdev.licensesdialog:licensesdialog:1.8.1') {
+        exclude module: 'support-v4'
+    }
+    compile 'com.android.support:appcompat-v7:25.0.1'
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+}
+
+
+
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion "25.0.0"
     defaultConfig {
-        applicationId "androidtd.browser"
+        applicationId "androidtd.dlnapp"
         minSdkVersion 15
         targetSdkVersion 25
         versionCode 1
@@ -34,18 +53,4 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-}
-
-dependencies {
-    compile group: 'org.fourthline.cling', name: 'cling-core', version:'2.1.0'
-    compile group: 'org.eclipse.jetty', name: 'jetty-server', version:'8.1.18.v20150929'
-    compile group: 'org.eclipse.jetty', name: 'jetty-servlet', version:'8.1.18.v20150929'
-    compile group: 'org.eclipse.jetty', name: 'jetty-client', version:'8.1.18.v20150929'
-    compile group: 'org.slf4j', name: 'slf4j-jdk14', version:'1.7.14'
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    compile 'com.android.support:appcompat-v7:25.1.0'
-    testCompile 'junit:junit:4.12'
 }
