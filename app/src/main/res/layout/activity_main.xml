@@ -10,15 +10,9 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="androidtd.dlnapp.MainActivity">
 
-    <TextView
-        android:text="BAT LES COUILLES FRERE"
+    <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="41dp"
-        android:id="@+id/textView"
-        android:textStyle="normal|bold"
-        android:textSize="36sp"
-        android:textColor="@color/colorAccent" />
+        android:id="@+id/liste">
+    </ListView>
 </RelativeLayout>
