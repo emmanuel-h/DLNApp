@@ -1,15 +1,4 @@
 <resources>
     <string name="app_name">DLNApp</string>
-    <string name="searchLAN">searchLAN</string>
-    <string name="switchRouter">switchRouter</string>
-    <string name="toggleDebugLogging">toggleDebugLogging</string>
-    <string name="searchingLAN">searchingLAN</string>
-    <string name="disablingRouter">disablingRouter</string>
-    <string name="enablingRouter">enablingRouter</string>
-    <string name="errorSwitchingRouter">errorSwitchingRouter</string>
-    <string name="disablingDebugLogging">disablingDebugLogging</string>
-    <string name="enablingDebugLogging">enablingDebugLogging</string>
-    <string name="deviceDetails">deviceDetails</string>
-    <string name="OK">OK</string>
-    <string name="deviceDetailsNotYetAvailable">deviceDetailsNotYetAvailable</string>
+    <string name="action_refresh">Refresh</string>
 </resources>
