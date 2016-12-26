@@ -17,6 +17,30 @@ repositories {
         url 'http://4thline.org/m2'
     }
 }
+<<<<<<< HEAD
+=======
+
+dependencies {
+
+    // Cling
+    compile group: 'org.fourthline.cling', name: 'cling-core', version:'2.1.0'
+    //compile group: 'org.fourthline.cling', name: 'cling-support', version:'2.1.0'
+    compile group: 'org.eclipse.jetty', name: 'jetty-server', version:'8.1.18.v20150929'
+    compile group: 'org.eclipse.jetty', name: 'jetty-servlet', version:'8.1.18.v20150929'
+    compile group: 'org.eclipse.jetty', name: 'jetty-client', version:'8.1.18.v20150929'
+    compile group: 'org.slf4j', name: 'slf4j-jdk14', version:'1.7.14'
+
+    compile('de.psdev.licensesdialog:licensesdialog:1.8.1') {
+        exclude module: 'support-v4'
+    }
+    compile 'com.android.support:appcompat-v7:25.0.1'
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+}
+
+
+
+>>>>>>> 84e0bd5e9cb350c4b87c1e62bffed001a9fda438
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
