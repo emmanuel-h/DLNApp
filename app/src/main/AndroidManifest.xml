@@ -14,11 +14,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-<<<<<<< HEAD
         <activity android:name=".MainActivity">
-=======
-        <activity android:name=".BrowserActivity">
->>>>>>> 84e0bd5e9cb350c4b87c1e62bffed001a9fda438
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
