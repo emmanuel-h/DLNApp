@@ -1,8 +1,5 @@
 <resources>
     <string name="app_name">DLNApp</string>
-<<<<<<< HEAD
-    <string name="action_refresh">Refresh</string>
-=======
     <string name="searchLAN">searchLAN</string>
     <string name="searchingLAN">searchingLAN</string>
     <string name="switchRouter">switch router</string>
@@ -15,5 +12,4 @@
     <string name="deviceDetails">device details</string>
     <string name="OK">ok</string>
     <string name="deviceDetailsNotYetAvailable">deviceDetailsNotYetAvailable</string>
->>>>>>> 84e0bd5e9cb350c4b87c1e62bffed001a9fda438
 </resources>
