@@ -20,6 +20,7 @@ import java.util.ArrayList;
 public class MyAdapter extends ArrayAdapter<MyObject> {
 
     Context context;
+    Browser browser;
 
     public MyAdapter(Context context,ArrayList<MyObject> myObjects) {
         super(context,0,myObjects);
@@ -28,9 +29,9 @@ public class MyAdapter extends ArrayAdapter<MyObject> {
 
     @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         MyViewHolder holder;
-        MyObject myObject = getItem(position);
+        final MyObject myObject = getItem(position);
         if(convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.my_object, parent, false);
             holder = new MyViewHolder(convertView);
@@ -44,12 +45,15 @@ public class MyAdapter extends ArrayAdapter<MyObject> {
         holder.holder_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO GOTO POTO KODO
+                browser.browseDirectory(myObject);
             }
         });
         return convertView;
     }
 
+    public void setBrowser(Browser browser){
+        this.browser = browser;
+    }
 
     private class MyViewHolder {
         TextView titleMyObject;

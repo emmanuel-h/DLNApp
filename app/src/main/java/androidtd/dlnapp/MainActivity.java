@@ -23,21 +23,15 @@ public class MainActivity extends AppCompatActivity implements Notification {
     ListView listView;
     Fragment fragment;
     ArrayAdapter<MyObject> myObjectArrayAdapter;
-    ArrayList<MyObject> myObjects;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         listView = (ListView) findViewById(R.id.liste);
-        myObjects = new ArrayList<>();
+        ArrayList<MyObject> myObjects = new ArrayList<>();
         myObjectArrayAdapter = new MyAdapter(this,myObjects);
         listView.setAdapter(myObjectArrayAdapter);
-        //MyObject bidon = new MyObject(R.drawable.ic_device,"titre 1","description 1");
-        //MyObject bidon2 = new MyObject(R.drawable.ic_device,"titre 2","description 2");
-        //myObjectArrayAdapter.add(bidon);
-        //myObjectArrayAdapter.add(bidon2);
-        System.out.println("bite main");
         FragmentManager fragmentManager = getFragmentManager();
         fragment = fragmentManager.findFragmentByTag("browser");
 
@@ -45,9 +39,7 @@ public class MainActivity extends AppCompatActivity implements Notification {
             fragment = new Browser();
             fragmentManager.beginTransaction().add(fragment, "browser").commit();
         }
-
-        System.out.println("context main : " + this.toString());
-
+        ((MyAdapter) myObjectArrayAdapter).setBrowser((Browser)fragment);
     }
 
     @Override
@@ -60,9 +52,6 @@ public class MainActivity extends AppCompatActivity implements Notification {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.action_refresh:
-                /*MyObject bidon = new MyObject(R.drawable.ic_device,"titre 3","description 3");
-                myObjectArrayAdapter.add(bidon);
-                return true;*/
         }
         return super.onOptionsItemSelected(item);
     }
@@ -97,5 +86,34 @@ public class MainActivity extends AppCompatActivity implements Notification {
 
     public void clear(){
         myObjectArrayAdapter.clear();
+    }
+
+    @Override
+    public void showCurrentDirectory(final ArrayList<MyObject> myObjects) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                myObjectArrayAdapter.clear();
+                myObjectArrayAdapter.addAll(myObjects);
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed(){
+        if(((Browser)fragment).isRoot()){
+            super.onBackPressed();
+        } else {
+            ((Browser)fragment).goBack();
+        }
+    }
+
+    @Override
+    public void showDevices(){
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction().remove(fragment).commit();
+        fragment = new Browser();
+        fragmentManager.beginTransaction().add(fragment, "browser").commit();
+        ((MyAdapter) myObjectArrayAdapter).setBrowser((Browser)fragment);
     }
 }

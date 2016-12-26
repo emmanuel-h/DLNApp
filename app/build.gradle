@@ -5,18 +5,18 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.2'
+        classpath 'com.android.tools.build:gradle:2.2.3'
     }
 }
 apply plugin: 'com.android.application'
 
 repositories {
     mavenCentral()
-    mavenLocal()
     maven {
         url 'http://4thline.org/m2'
     }
 }
+
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
@@ -28,6 +28,9 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+    packagingOptions {
+        exclude 'META-INF/beans.xml'
+    }
     buildTypes {
         release {
             minifyEnabled false
@@ -37,11 +40,12 @@ android {
 }
 
 dependencies {
-    compile group: 'org.fourthline.cling', name: 'cling-core', version:'2.1.0'
-    compile group: 'org.eclipse.jetty', name: 'jetty-server', version:'8.1.18.v20150929'
-    compile group: 'org.eclipse.jetty', name: 'jetty-servlet', version:'8.1.18.v20150929'
-    compile group: 'org.eclipse.jetty', name: 'jetty-client', version:'8.1.18.v20150929'
-    compile group: 'org.slf4j', name: 'slf4j-jdk14', version:'1.7.14'
+    compile group: 'org.fourthline.cling', name: 'cling-core', version:'2.1.1'
+    compile group: 'org.fourthline.cling', name: 'cling-support', version:'2.1.1'
+    compile group: 'org.eclipse.jetty', name: 'jetty-server', version:'8.1.12.v20130726'
+    compile group: 'org.eclipse.jetty', name: 'jetty-servlet', version:'8.1.12.v20130726'
+    compile group: 'org.eclipse.jetty', name: 'jetty-client', version:'8.1.12.v20130726'
+    compile group: 'org.slf4j', name: 'slf4j-simple', version:'1.7.21'
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
