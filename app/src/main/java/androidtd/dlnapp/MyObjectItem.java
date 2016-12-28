@@ -1,7 +1,16 @@
 package androidtd.dlnapp;
 
+import android.content.ContentResolver;
+import android.content.Context;
+import android.net.Uri;
+import android.webkit.MimeTypeMap;
+
 import org.fourthline.cling.support.model.DIDLObject;
 import org.fourthline.cling.support.model.item.Item;
+import org.seamless.util.MimeType;
+
+import java.io.File;
+import java.util.StringTokenizer;
 
 /**
  * Created by GroupeProjetDLNApp on 23/12/16.
@@ -10,14 +19,28 @@ import org.fourthline.cling.support.model.item.Item;
 public class MyObjectItem extends MyObject {
 
     private final DIDLObject item;
+    String extension;
 
     public MyObjectItem(Item childItem) {
-        super(R.drawable.ic_device,childItem.getTitle(),"");
+        super(R.drawable.text,childItem.getTitle(),"");
         this.item = childItem;
+        getMimeType(super.getTitleMyObject());
     }
+
 
     public DIDLObject getItem(){
         return this.item;
     }
 
+    public void getMimeType(String s){
+        this.extension = MimeTypeMap.getFileExtensionFromUrl(s);
+        if(this.extension != null){
+            this.extension=MimeTypeMap.getSingleton().getMimeTypeFromExtension(this.extension);
+        }
+    }
+
+    public String getType() {
+        StringTokenizer st = new StringTokenizer(this.extension,"/");
+        return st.nextToken();
+    }
 }

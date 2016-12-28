@@ -13,7 +13,7 @@ public class MyObjectContainer extends MyObject {
     private Service service;
 
     public MyObjectContainer(Container container, Service service){
-        super(R.drawable.ic_device, container.getTitle(), "");
+        super(R.drawable.folder, container.getTitle(), "");
         this.container = container;
         this.service = service;
     }

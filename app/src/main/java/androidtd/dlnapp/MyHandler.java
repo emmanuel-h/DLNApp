@@ -19,12 +19,12 @@ import java.util.ArrayList;
 
 public class MyHandler extends Browse {
 
-    private Notification context;
+    private Notification notification;
     private Service androidUpnpService;
 
     public MyHandler(Service service, String containerId, BrowseFlag flag, Context context) {
         super(service, containerId, flag);
-        this.context = (Notification) context;
+        this.notification = (Notification) context;
         this.androidUpnpService = service;
     }
 
@@ -35,7 +35,7 @@ public class MyHandler extends Browse {
             myObjects.add( new MyObjectContainer(childContainer,androidUpnpService));
         for (Item childItem : didl.getItems())
             myObjects.add( new MyObjectItem(childItem));
-        context.showCurrentDirectory(myObjects);
+        notification.showCurrentDirectory(myObjects);
     }
 
     @Override

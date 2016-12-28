@@ -2,11 +2,9 @@ package androidtd.dlnapp;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
@@ -17,18 +15,27 @@ import org.fourthline.cling.model.meta.Service;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements Notification {
+/**
+ * Created by GroupeProjetDLNApp on 23/12/16.
+ */
+
+public class MainActivity extends AppCompatActivity implements Notification,SwipeRefreshLayout.OnRefreshListener {
 
 
     ListView listView;
     Fragment fragment;
     ArrayAdapter<MyObject> myObjectArrayAdapter;
+    SwipeRefreshLayout swipeLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         listView = (ListView) findViewById(R.id.liste);
+
+        swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipeLayout);
+        swipeLayout.setOnRefreshListener(this);
+
         ArrayList<MyObject> myObjects = new ArrayList<>();
         myObjectArrayAdapter = new MyAdapter(this,myObjects);
         listView.setAdapter(myObjectArrayAdapter);
@@ -50,8 +57,9 @@ public class MainActivity extends AppCompatActivity implements Notification {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.action_refresh:
+                ((Browser) fragment).refresh();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -115,5 +123,13 @@ public class MainActivity extends AppCompatActivity implements Notification {
         fragment = new Browser();
         fragmentManager.beginTransaction().add(fragment, "browser").commit();
         ((MyAdapter) myObjectArrayAdapter).setBrowser((Browser)fragment);
+    }
+
+    @Override
+    public void onRefresh() {
+        ((Browser) fragment).refresh();
+        swipeLayout.setRefreshing(false);
+        swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipeLayout);
+        swipeLayout.setOnRefreshListener(this);
     }
 }

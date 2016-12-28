@@ -1,34 +1,19 @@
 package androidtd.dlnapp;
 
 import android.app.Fragment;
-import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
-import android.media.audiofx.NoiseSuppressor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.MediaController;
-import android.widget.Toast;
-import android.widget.VideoView;
 
 import org.fourthline.cling.android.AndroidUpnpService;
 import org.fourthline.cling.android.AndroidUpnpServiceImpl;
 import org.fourthline.cling.model.meta.Device;
 import org.fourthline.cling.support.model.BrowseFlag;
 
-import java.io.IOException;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Stack;
@@ -119,13 +104,30 @@ public class Browser extends Fragment {
                 androidUpnpService.getControlPoint().execute(myHandler);
             } else {
                 if(myObject instanceof  MyObjectItem){
-                    Uri uri = Uri.parse(((MyObjectItem) myObject).getItem().getFirstResource().getValue());
-                    MimeTypeMap mime = MimeTypeMap.getSingleton();
-                    String type = mime.getMimeTypeFromUrl(uri.toString());
-                    Intent intent = new Intent(context, VideoViewActivity.class);
-                    intent.putExtra("uri", ((MyObjectItem) myObject).getItem().getFirstResource().getValue());
-                    intent.putExtra("type", type);
-                    startActivity(intent);
+                    String type=((MyObjectItem)myObject).getType();
+                    Intent intent;
+                    String uri = ((MyObjectItem) myObject).getItem().getFirstResource().getValue();
+                    switch(type){
+                        case "video":
+                        case "audio":
+                            intent = new Intent(context, MyVideoMusicViewActivity.class);
+                            intent.putExtra("uri", uri);
+                            intent.putExtra("type", type);
+                            startActivity(intent);
+                            break;
+                        case "image":
+                            intent = new Intent(context, MyImageViewActivity.class);
+                            intent.putExtra("uri", uri);
+                            startActivity(intent);
+                            break;
+                        default:
+                            intent = new Intent();
+                            intent.setAction(android.content.Intent.ACTION_VIEW);
+                            intent.setDataAndType(Uri.parse(uri), type);
+                            intent = new Intent(context, MyImageViewActivity.class);
+                            intent.putExtra("uri", uri);
+                            startActivity(intent);
+                    }
                 }
             }
         }
@@ -139,6 +141,29 @@ public class Browser extends Fragment {
             MyObject myObject = stack.pop();
             myHandler = new MyHandler(((MyObjectContainer) myObject).getService(),((MyObjectContainer) myObject).getIdParent(), BrowseFlag.DIRECT_CHILDREN,this.context);
             androidUpnpService.getControlPoint().execute(myHandler);
+        }
+    }
+
+    public void refresh(){
+        MyObject myObject;
+        switch(stack.size()){
+            case 0:
+                notification.showDevices();
+                break;
+            case 1:
+                myObject = stack.peek();
+                myHandler = new MyHandler(((MyObjectDevice)
+                        myObject).getContentDirectory(), "0",
+                        BrowseFlag.DIRECT_CHILDREN,this.context);
+                androidUpnpService.getControlPoint().execute(myHandler);
+                break;
+            default:
+                myObject = stack.peek();
+                myHandler = new MyHandler(((MyObjectContainer)
+                        myObject).getService(),((MyObjectContainer) myObject).getId(),
+                        BrowseFlag.DIRECT_CHILDREN,this.context);
+                androidUpnpService.getControlPoint().execute(myHandler);
+                break;
         }
     }
 

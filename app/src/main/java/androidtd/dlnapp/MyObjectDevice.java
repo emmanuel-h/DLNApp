@@ -1,6 +1,8 @@
 package androidtd.dlnapp;
 
 import org.fourthline.cling.model.meta.Device;
+import org.fourthline.cling.model.meta.Icon;
+import org.fourthline.cling.model.meta.RemoteDevice;
 import org.fourthline.cling.model.meta.Service;
 
 /**
@@ -10,10 +12,12 @@ import org.fourthline.cling.model.meta.Service;
 public class MyObjectDevice extends MyObject {
 
     private Device device;
+    private String urlIcon;
 
     public MyObjectDevice(int icon, Device device) {
         super(icon);
         this.device = device;
+        this.urlIcon = findUrlIcon();
     }
 
     public Device getDevice() {
@@ -51,4 +55,19 @@ public class MyObjectDevice extends MyObject {
             return false;
         }
     }
+
+    public String findUrlIcon(){
+        for(Icon icon : this.device.getIcons()){
+            // Test dimension images
+            if(icon != null && icon.getHeight() >= 64 && icon.getWidth() >= 64){
+                return ((RemoteDevice) device).normalizeURI(icon.getUri()).toString();
+            }
+        }
+        return null;
+    }
+
+    public String getUrlIcon() {
+        return urlIcon;
+    }
+
 }

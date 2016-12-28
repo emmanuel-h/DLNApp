@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
 /**
@@ -39,7 +41,11 @@ public class MyAdapter extends ArrayAdapter<MyObject> {
         }else{
             holder = (MyViewHolder)convertView.getTag();
         }
-        holder.iconMyObject.setImageResource(myObject.getIcon());
+        if(myObject instanceof MyObjectDevice && ((MyObjectDevice) myObject).getUrlIcon()!=null){
+            Picasso.with(context).load(((MyObjectDevice) myObject).getUrlIcon()).into(holder.iconMyObject);
+        } else {
+            holder.iconMyObject.setImageResource(myObject.getIcon());
+        }
         holder.descriptionMyObject.setText(myObject.getDescriptionMyObject());
         holder.titleMyObject.setText(myObject.getTitleMyObject());
         holder.holder_layout.setOnClickListener(new View.OnClickListener() {
