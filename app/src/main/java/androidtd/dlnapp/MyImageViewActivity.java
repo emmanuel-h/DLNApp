@@ -79,7 +79,6 @@ public class MyImageViewActivity extends Activity {
         }else{
             index++;
         }
-        imageRight();
         String url = imageArray.get(index);
         Picasso.with(this).load(url).into(imageView);
     }
