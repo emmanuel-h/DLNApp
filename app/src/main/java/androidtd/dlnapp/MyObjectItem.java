@@ -1,15 +1,10 @@
 package androidtd.dlnapp;
 
-import android.content.ContentResolver;
-import android.content.Context;
 import android.net.Uri;
 import android.webkit.MimeTypeMap;
 
 import org.fourthline.cling.support.model.DIDLObject;
 import org.fourthline.cling.support.model.item.Item;
-import org.seamless.util.MimeType;
-
-import java.io.File;
 import java.util.StringTokenizer;
 
 /**
@@ -33,14 +28,30 @@ public class MyObjectItem extends MyObject {
     }
 
     public void getMimeType(String s){
-        this.extension = MimeTypeMap.getFileExtensionFromUrl(s);
+        String s2 = replaceChar(s);
+        System.out.println("bite"+s2);
+        this.extension = MimeTypeMap.getFileExtensionFromUrl(s2);
+        System.out.println(extension);
         if(this.extension != null){
             this.extension=MimeTypeMap.getSingleton().getMimeTypeFromExtension(this.extension);
         }
     }
 
     public String getType() {
+        if(this.extension == null){
+            return "format inconnu";
+        }
         StringTokenizer st = new StringTokenizer(this.extension,"/");
         return st.nextToken();
+    }
+
+    public String getExtension(){
+        return this.extension;
+    }
+
+    public String replaceChar(String s){
+        String s2 =  Uri.encode(s);
+        s = s2.replaceAll("'","%27");
+        return s;
     }
 }

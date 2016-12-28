@@ -67,19 +67,24 @@ public class MainActivity extends AppCompatActivity implements Notification,Swip
     public void deviceAdded(final Device device) {
         runOnUiThread(new Runnable() {
             public void run() {
-                MyObjectDevice myObjectDevice = new MyObjectDevice(R.drawable.ic_device, device);
-                Service contentDirectory = myObjectDevice.getContentDirectory();
+            if(device.isFullyHydrated()) {
+                MyObject myObjectDevice = new MyObjectDevice(R.drawable.ic_device, device);
+                Service contentDirectory = ((MyObjectDevice)myObjectDevice).getContentDirectory();
                 // The device is display only if he has contentDirectory
-                if(contentDirectory != null) {
-                    int position = myObjectArrayAdapter.getPosition(myObjectDevice);
-                    if (position >= 0) {
-                        // Device already in the list, re-set new value at same position
-                        myObjectArrayAdapter.remove(myObjectDevice);
-                        myObjectArrayAdapter.insert(myObjectDevice, position);
-                    } else {
-                        myObjectArrayAdapter.add(myObjectDevice);
-                    }
+                if (contentDirectory != null) {
+                    try {
+                        int position = myObjectArrayAdapter.getPosition(myObjectDevice);
+
+                        if (position >= 0) {
+                            // Device already in the list, re-set new value at same position
+                            myObjectArrayAdapter.remove(myObjectDevice);
+                            myObjectArrayAdapter.insert(myObjectDevice, position);
+                        } else {
+                            myObjectArrayAdapter.add(myObjectDevice);
+                        }
+                    } catch (ClassCastException e){}
                 }
+            }
             }
         });
     }
@@ -131,5 +136,34 @@ public class MainActivity extends AppCompatActivity implements Notification,Swip
         swipeLayout.setRefreshing(false);
         swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipeLayout);
         swipeLayout.setOnRefreshListener(this);
+    }
+
+    @Override
+    public ArrayList<String> getUrlMyObjectArray(){
+        int size = myObjectArrayAdapter.getCount();
+        ArrayList<String> listItem = new ArrayList<>();
+        for(int i = 0; i < size; i++){
+            MyObject o = myObjectArrayAdapter.getItem(i);
+            if(o instanceof MyObjectItem){
+                //String type = ((MyObjectItem) o).getType();
+                //if(type.equals("image")){
+                listItem.add(((MyObjectItem)
+                        o).getItem().getFirstResource().getValue());
+                //}
+            }
+        }
+        return listItem;
+    }
+
+    @Override
+    public int getPositionUrl(ArrayList<String> liste, String s){
+        int index = 0;
+        for(String s2 : liste){
+            if(s.equals(s2)){
+                return index;
+            }
+            index++;
+        }
+        return index;
     }
 }

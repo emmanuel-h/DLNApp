@@ -19,4 +19,8 @@ public interface Notification {
     void showCurrentDirectory(ArrayList<MyObject> myObjects);
 
     void showDevices();
+
+    ArrayList<String> getUrlMyObjectArray();
+
+    int getPositionUrl(ArrayList<String> liste, String s);
 }

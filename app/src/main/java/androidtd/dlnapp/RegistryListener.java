@@ -22,7 +22,6 @@ public class RegistryListener extends DefaultRegistryListener {
     public RegistryListener(Context context){
         super();
         this.context = (Notification) context;
-        System.out.println("context : " + context.toString());
     }
 
     @Override

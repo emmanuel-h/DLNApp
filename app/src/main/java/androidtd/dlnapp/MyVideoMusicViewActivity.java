@@ -1,14 +1,15 @@
 package androidtd.dlnapp;
 import android.app.Activity;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.MediaController;
-import android.widget.RelativeLayout;
 import android.widget.VideoView;
+
+import java.util.List;
 
 /**
  * Created by GroupeProjetDLNApp on 26/12/2016.
@@ -28,7 +29,7 @@ public class MyVideoMusicViewActivity extends Activity{
         super.onCreate(savedInstanceState);
         videoUrl = getIntent().getStringExtra("uri");
         type = getIntent().getStringExtra("type");
-
+        System.out.println("bite"+type);
         setContentView(R.layout.video_view_main);
 
         videoView = (VideoView) findViewById(R.id.videoView);

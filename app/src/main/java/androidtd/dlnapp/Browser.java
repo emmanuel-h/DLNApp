@@ -5,9 +5,11 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.widget.Toast;
 
 import org.fourthline.cling.android.AndroidUpnpService;
 import org.fourthline.cling.android.AndroidUpnpServiceImpl;
@@ -16,6 +18,7 @@ import org.fourthline.cling.support.model.BrowseFlag;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Stack;
 
 /**
@@ -104,29 +107,39 @@ public class Browser extends Fragment {
                 androidUpnpService.getControlPoint().execute(myHandler);
             } else {
                 if(myObject instanceof  MyObjectItem){
+                    String extension=((MyObjectItem)myObject).getExtension();
                     String type=((MyObjectItem)myObject).getType();
                     Intent intent;
                     String uri = ((MyObjectItem) myObject).getItem().getFirstResource().getValue();
-                    switch(type){
-                        case "video":
-                        case "audio":
-                            intent = new Intent(context, MyVideoMusicViewActivity.class);
-                            intent.putExtra("uri", uri);
-                            intent.putExtra("type", type);
-                            startActivity(intent);
-                            break;
-                        case "image":
-                            intent = new Intent(context, MyImageViewActivity.class);
-                            intent.putExtra("uri", uri);
-                            startActivity(intent);
-                            break;
-                        default:
-                            intent = new Intent();
-                            intent.setAction(android.content.Intent.ACTION_VIEW);
-                            intent.setDataAndType(Uri.parse(uri), type);
-                            intent = new Intent(context, MyImageViewActivity.class);
-                            intent.putExtra("uri", uri);
-                            startActivity(intent);
+
+                    Uri location = Uri.parse(uri);
+                    if(type.equals("image")) {
+                        intent = new Intent(context, MyImageViewActivity.class);
+                        intent.putExtra("uri", uri);
+                        ArrayList<String> liste = notification.getUrlMyObjectArray();
+                        intent.putStringArrayListExtra("array", liste);
+                        intent.putExtra("index", notification.getPositionUrl(liste, uri));
+                        startActivity(intent);
+                    } else {
+                        intent = new Intent(Intent.ACTION_VIEW,location);
+                        intent.setDataAndType(location,extension);
+                        Intent chooser = Intent.createChooser(intent,"bite");
+                        if(intent.resolveActivity(context.getPackageManager())!=null){
+                            startActivity(chooser);
+                        } else {
+                            if(type.equals( "video") || type.equals( "audio")) {
+                                intent = new Intent(context, MyVideoMusicViewActivity.class);
+                                intent.putExtra("uri", uri);
+                                intent.putExtra("type", type);
+                                startActivity(intent);
+                            } else {
+                                    intent = new Intent();
+                                    intent.setAction(android.content.Intent.ACTION_VIEW);
+                                    intent.setDataAndType(Uri.parse(uri), extension);
+                                    intent.putExtra("uri", uri);
+                                    startActivity(intent);
+                            }
+                        }
                     }
                 }
             }
