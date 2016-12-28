@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements Notification,Swip
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setLogo(R.mipmap.ic_logo_inapp);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
+        
         listView = (ListView) findViewById(R.id.liste);
 
         // Allow to refresh a view
