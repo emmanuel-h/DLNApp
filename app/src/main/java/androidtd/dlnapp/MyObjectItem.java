@@ -17,7 +17,7 @@ public class MyObjectItem extends MyObject {
     String extension;
 
     public MyObjectItem(Item childItem) {
-        super(R.drawable.text,childItem.getTitle(),"");
+        super(R.drawable.file,childItem.getTitle(),"");
         this.item = childItem;
         getMimeType(super.getTitleMyObject());
     }
@@ -29,7 +29,6 @@ public class MyObjectItem extends MyObject {
 
     public void getMimeType(String s){
         String s2 = replaceChar(s);
-        System.out.println("bite"+s2);
         this.extension = MimeTypeMap.getFileExtensionFromUrl(s2);
         System.out.println(extension);
         if(this.extension != null){

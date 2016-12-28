@@ -1,6 +1,6 @@
 package androidtd.dlnapp;
+
 import android.app.Activity;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -8,8 +8,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.MediaController;
 import android.widget.VideoView;
-
-import java.util.List;
 
 /**
  * Created by GroupeProjetDLNApp on 26/12/2016.
@@ -29,7 +27,7 @@ public class MyVideoMusicViewActivity extends Activity{
         super.onCreate(savedInstanceState);
         videoUrl = getIntent().getStringExtra("uri");
         type = getIntent().getStringExtra("type");
-        System.out.println("bite"+type);
+
         setContentView(R.layout.video_view_main);
 
         videoView = (VideoView) findViewById(R.id.videoView);
@@ -41,7 +39,7 @@ public class MyVideoMusicViewActivity extends Activity{
             videoView.setMediaController(mediaController);
             videoView.setVideoURI(videoUri);
             if(type.equals("audio")) {
-                videoView.setBackgroundResource(R.drawable.ic_device);
+                videoView.setBackgroundResource(R.drawable.music_background);
             }
         }catch(Exception e){
 
@@ -83,10 +81,18 @@ public class MyVideoMusicViewActivity extends Activity{
                     | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
                     | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
                     | View.SYSTEM_UI_FLAG_IMMERSIVE);
+            if(type.equals("audio")){
+                videoView.setBackgroundResource(0);
+                videoView.setBackgroundResource(R.drawable.music_background);
+            }
             landscape = true;
 
         }else if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
             videoView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            if(type.equals("audio")){
+                videoView.setBackgroundResource(0);
+                videoView.setBackgroundResource(R.drawable.music_background);
+            }
             landscape = false;
 
         }

@@ -24,23 +24,11 @@ public class MyObject {
         return icon;
     }
 
-    public void setIcon(int icon) {
-        this.icon = icon;
-    }
-
     public String getTitleMyObject() {
         return titleMyObject;
     }
 
-    public void setTitleMyObject(String titleMyObject) {
-        this.titleMyObject = titleMyObject;
-    }
-
     public String getDescriptionMyObject() {
         return descriptionMyObject;
-    }
-
-    public void setDescriptionMyObject(String descriptionMyObject) {
-        this.descriptionMyObject = descriptionMyObject;
     }
 }

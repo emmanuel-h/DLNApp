@@ -96,11 +96,13 @@ public class Browser extends Fragment {
     public void browseDirectory(MyObject myObject) {
         if(myObject instanceof MyObjectDevice && context != null){
             stack.push(myObject);
+            // If myObject is a device, display his root content
             if(((MyObjectDevice) myObject).getDevice().isFullyHydrated()) {
                 myHandler = new MyHandler(((MyObjectDevice) myObject).getContentDirectory(), "0", BrowseFlag.DIRECT_CHILDREN, this.context);
                 androidUpnpService.getControlPoint().execute(myHandler);
             }
         } else {
+            // If myObject is a container, display the content inside this container
             if (myObject instanceof MyObjectContainer){
                 stack.push(myObject);
                 myHandler = new MyHandler(((MyObjectContainer) myObject).getService(),((MyObjectContainer) myObject).getId(), BrowseFlag.DIRECT_CHILDREN,this.context);
@@ -113,6 +115,7 @@ public class Browser extends Fragment {
                     String uri = ((MyObjectItem) myObject).getItem().getFirstResource().getValue();
 
                     Uri location = Uri.parse(uri);
+                    // If it is an image, open it into our custom ImageView to benefit the swipe right and left
                     if(type.equals("image")) {
                         intent = new Intent(context, MyImageViewActivity.class);
                         intent.putExtra("uri", uri);
@@ -121,18 +124,21 @@ public class Browser extends Fragment {
                         intent.putExtra("index", notification.getPositionUrl(liste, uri));
                         startActivity(intent);
                     } else {
+                        // If an application can open the media, user can choose it
                         intent = new Intent(Intent.ACTION_VIEW,location);
                         intent.setDataAndType(location,extension);
-                        Intent chooser = Intent.createChooser(intent,"bite");
+                        Intent chooser = Intent.createChooser(intent,"Choose an application to open the media");
                         if(intent.resolveActivity(context.getPackageManager())!=null){
                             startActivity(chooser);
                         } else {
+                            // If no application can open the video, open it into our custom video view
                             if(type.equals( "video") || type.equals( "audio")) {
                                 intent = new Intent(context, MyVideoMusicViewActivity.class);
                                 intent.putExtra("uri", uri);
                                 intent.putExtra("type", type);
                                 startActivity(intent);
                             } else {
+                                // If the media is not recognized, open it with android default browser
                                     intent = new Intent();
                                     intent.setAction(android.content.Intent.ACTION_VIEW);
                                     intent.setDataAndType(Uri.parse(uri), extension);
@@ -160,9 +166,11 @@ public class Browser extends Fragment {
     public void refresh(){
         MyObject myObject;
         switch(stack.size()){
+            // Refresh the list of devices
             case 0:
                 notification.showDevices();
                 break;
+            // Refresh display if we are on the root of a device
             case 1:
                 myObject = stack.peek();
                 myHandler = new MyHandler(((MyObjectDevice)
@@ -170,6 +178,7 @@ public class Browser extends Fragment {
                         BrowseFlag.DIRECT_CHILDREN,this.context);
                 androidUpnpService.getControlPoint().execute(myHandler);
                 break;
+
             default:
                 myObject = stack.peek();
                 myHandler = new MyHandler(((MyObjectContainer)

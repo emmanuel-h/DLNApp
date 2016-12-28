@@ -24,10 +24,6 @@ public class MyObjectDevice extends MyObject {
         return device;
     }
 
-    public void setDevice(Device device) {
-        this.device = device;
-    }
-
     public Service getContentDirectory() {
         for (Service current : this.device.getServices())
             if (current.getServiceType().getType().equals("ContentDirectory"))
@@ -58,7 +54,7 @@ public class MyObjectDevice extends MyObject {
 
     public String findUrlIcon(){
         for(Icon icon : this.device.getIcons()){
-            // Test dimension images
+            // Test image size
             if(icon != null && icon.getHeight() >= 64 && icon.getWidth() >= 64){
                 return ((RemoteDevice) device).normalizeURI(icon.getUri()).toString();
             }

@@ -1,9 +1,6 @@
 package androidtd.dlnapp;
 
 import android.content.Context;
-import android.util.Log;
-import android.widget.ArrayAdapter;
-import android.widget.Toast;
 
 import org.fourthline.cling.model.meta.Device;
 import org.fourthline.cling.model.meta.LocalDevice;

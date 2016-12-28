@@ -33,15 +33,18 @@ public class MainActivity extends AppCompatActivity implements Notification,Swip
         setContentView(R.layout.activity_main);
         listView = (ListView) findViewById(R.id.liste);
 
+        // Allow to refresh a view
         swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipeLayout);
         swipeLayout.setOnRefreshListener(this);
 
+        // List of MyObjects displayed
         ArrayList<MyObject> myObjects = new ArrayList<>();
         myObjectArrayAdapter = new MyAdapter(this,myObjects);
         listView.setAdapter(myObjectArrayAdapter);
         FragmentManager fragmentManager = getFragmentManager();
         fragment = fragmentManager.findFragmentByTag("browser");
 
+        // Part of the application who make the upnp work with the cling core library
         if(fragment == null){
             fragment = new Browser();
             fragmentManager.beginTransaction().add(fragment, "browser").commit();
@@ -68,7 +71,8 @@ public class MainActivity extends AppCompatActivity implements Notification,Swip
         runOnUiThread(new Runnable() {
             public void run() {
             if(device.isFullyHydrated()) {
-                MyObject myObjectDevice = new MyObjectDevice(R.drawable.ic_device, device);
+                // Creating the device
+                MyObject myObjectDevice = new MyObjectDevice(R.drawable.server, device);
                 Service contentDirectory = ((MyObjectDevice)myObjectDevice).getContentDirectory();
                 // The device is display only if he has contentDirectory
                 if (contentDirectory != null) {
@@ -92,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements Notification,Swip
     public void deviceRemoved(final Device device) {
         runOnUiThread(new Runnable() {
             public void run() {
-                myObjectArrayAdapter.remove(new MyObjectDevice(R.drawable.ic_device, device));
+                myObjectArrayAdapter.remove(new MyObjectDevice(R.drawable.server, device));
             }
         });
     }
@@ -145,11 +149,8 @@ public class MainActivity extends AppCompatActivity implements Notification,Swip
         for(int i = 0; i < size; i++){
             MyObject o = myObjectArrayAdapter.getItem(i);
             if(o instanceof MyObjectItem){
-                //String type = ((MyObjectItem) o).getType();
-                //if(type.equals("image")){
                 listItem.add(((MyObjectItem)
                         o).getItem().getFirstResource().getValue());
-                //}
             }
         }
         return listItem;

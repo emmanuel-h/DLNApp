@@ -18,10 +18,6 @@ public class MyObjectContainer extends MyObject {
         this.service = service;
     }
 
-    public DIDLObject getContainer() {
-        return this.container;
-    }
-
     public Service getService(){
         return this.service;
     }
