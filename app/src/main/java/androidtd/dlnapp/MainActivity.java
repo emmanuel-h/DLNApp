@@ -234,14 +234,14 @@ public class MainActivity extends AppCompatActivity implements Notification,Swip
     /**
      * Get the position on the list of a given image url
      *
-     * @param liste The list to search inside
+     * @param list The list to search inside
      * @param s     The url to find
      * @return      The position
      */
     @Override
-    public int getPositionUrl(ArrayList<String> liste, String s){
+    public int getPositionUrl(ArrayList<String> list, String s){
         int index = 0;
-        for(String s2 : liste){
+        for(String s2 : list){
             if(s.equals(s2)){
                 return index;
             }

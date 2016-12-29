@@ -24,5 +24,5 @@ public interface Notification {
 
     ArrayList<String> getUrlMyObjectArray();
 
-    int getPositionUrl(ArrayList<String> liste, String s);
+    int getPositionUrl(ArrayList<String> list, String s);
 }
