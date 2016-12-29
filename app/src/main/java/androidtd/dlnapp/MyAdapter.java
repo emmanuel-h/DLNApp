@@ -36,16 +36,25 @@ public class MyAdapter extends ArrayAdapter<MyObject> {
     Browser browser;
 
     /**
-     * Constructeur
-     * 
-     * @param context
-     * @param myObjects
+     * Constructor
+     *
+     * @param context   The context of MainActivity
+     * @param myObjects The ArrayList of MyObject
      */
     public MyAdapter(Context context,ArrayList<MyObject> myObjects) {
         super(context,0,myObjects);
         this.context = context;
     }
 
+    /**
+     * Inflate the view with the properties of a MyObject
+     *
+     * @param position      The position of the current MyObject in the ArrayList
+     * @param convertView   The view in which properties will be displayed
+     * @param parent
+     *
+     * @return  The view inflated with the MyObject properties
+     */
     @NonNull
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
@@ -74,10 +83,18 @@ public class MyAdapter extends ArrayAdapter<MyObject> {
         return convertView;
     }
 
+    /**
+     * Setter for the Browser fragment
+     *
+     * @param browser   The Browser
+     */
     public void setBrowser(Browser browser){
         this.browser = browser;
     }
 
+    /**
+     * Match his properties with ids of the layout
+     */
     private class MyViewHolder {
         TextView titleMyObject;
         TextView descriptionMyObject;

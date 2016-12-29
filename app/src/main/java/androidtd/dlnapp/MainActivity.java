@@ -21,17 +21,37 @@ import androidtd.dlnapp.MyObject.MyObjectItem;
 import androidtd.dlnapp.UpnpConnection.Browser;
 
 /**
+ * First activity displayed when the application is launched. Implements the Notification Interface, allowing him to react to other classes demands
+ *
  * Created by GroupeProjetDLNApp on 23/12/16.
  */
-
 public class MainActivity extends AppCompatActivity implements Notification,SwipeRefreshLayout.OnRefreshListener {
 
-
+    /**
+     * Display the current ArrayList of MyObject
+     */
     ListView listView;
+
+    /**
+     * The fragment managing the cling-core services
+     */
     Fragment fragment;
+
+    /**
+     * ArrayAdapter of the current list of MyObject displayed
+     */
     ArrayAdapter<MyObject> myObjectArrayAdapter;
+
+    /**
+     * Used to refresh the current page by swiping down
+     */
     SwipeRefreshLayout swipeLayout;
 
+    /**
+     * Create and initialize all the components useful for the application
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,12 +83,24 @@ public class MainActivity extends AppCompatActivity implements Notification,Swip
         ((MyAdapter) myObjectArrayAdapter).setBrowser((Browser)fragment);
     }
 
+    /**
+     * Inflate the application's menu with the xml custom one
+     *
+     * @param menu  The menu to inflate
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_app,menu);
         return true;
     }
 
+    /**
+     * Set up the refresh button in the menu
+     *
+     * @param item  The refresh button
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -78,6 +110,11 @@ public class MainActivity extends AppCompatActivity implements Notification,Swip
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Add a device in the device's list myObjectArrayAdapter
+     *
+     * @param device
+     */
     public void deviceAdded(final Device device) {
         runOnUiThread(new Runnable() {
             public void run() {
@@ -104,6 +141,11 @@ public class MainActivity extends AppCompatActivity implements Notification,Swip
         });
     }
 
+    /**
+     * Remove a device in the myObjectArrayAdapter's list
+     *
+     * @param device
+     */
     public void deviceRemoved(final Device device) {
         runOnUiThread(new Runnable() {
             public void run() {
@@ -112,10 +154,18 @@ public class MainActivity extends AppCompatActivity implements Notification,Swip
         });
     }
 
+    /**
+     * Clear the list of devices
+     */
     public void clear(){
         myObjectArrayAdapter.clear();
     }
 
+    /**
+     * Show the current directory of a device or a DIDL object
+     *
+     * @param myObjects The list of items int the directory
+     */
     @Override
     public void showCurrentDirectory(final ArrayList<MyObject> myObjects) {
         runOnUiThread(new Runnable() {
@@ -127,6 +177,9 @@ public class MainActivity extends AppCompatActivity implements Notification,Swip
         });
     }
 
+    /**
+     * If the back key is pressed, back track in the file tree
+     */
     @Override
     public void onBackPressed(){
         if(((Browser)fragment).isRoot()){
@@ -136,6 +189,9 @@ public class MainActivity extends AppCompatActivity implements Notification,Swip
         }
     }
 
+    /**
+     * Reset the browser to refresh the display of the devices
+     */
     @Override
     public void showDevices(){
         FragmentManager fragmentManager = getFragmentManager();
@@ -145,6 +201,9 @@ public class MainActivity extends AppCompatActivity implements Notification,Swip
         ((MyAdapter) myObjectArrayAdapter).setBrowser((Browser)fragment);
     }
 
+    /**
+     * Refresh the view if the user has swipe down
+     */
     @Override
     public void onRefresh() {
         ((Browser) fragment).refresh();
@@ -153,6 +212,11 @@ public class MainActivity extends AppCompatActivity implements Notification,Swip
         swipeLayout.setOnRefreshListener(this);
     }
 
+    /**
+     * Find the urls of all the ressources found in the current folder
+     *
+     * @return  A array with all the urls
+     */
     @Override
     public ArrayList<String> getUrlMyObjectArray(){
         int size = myObjectArrayAdapter.getCount();
@@ -167,6 +231,13 @@ public class MainActivity extends AppCompatActivity implements Notification,Swip
         return listItem;
     }
 
+    /**
+     * Get the position on the list of a given image url
+     *
+     * @param liste The list to search inside
+     * @param s     The url to find
+     * @return      The position
+     */
     @Override
     public int getPositionUrl(ArrayList<String> liste, String s){
         int index = 0;
