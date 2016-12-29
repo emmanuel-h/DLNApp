@@ -4,6 +4,8 @@ import org.fourthline.cling.model.meta.Device;
 
 import java.util.ArrayList;
 
+import androidtd.dlnapp.MyObject.MyObject;
+
 /**
  * Created by GroupeProjetDLNApp on 23/12/16.
  */

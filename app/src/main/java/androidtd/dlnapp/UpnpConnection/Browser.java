@@ -1,15 +1,13 @@
-package androidtd.dlnapp;
+package androidtd.dlnapp.UpnpConnection;
 
 import android.app.Fragment;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.widget.Toast;
 
 import org.fourthline.cling.android.AndroidUpnpService;
 import org.fourthline.cling.android.AndroidUpnpServiceImpl;
@@ -18,25 +16,65 @@ import org.fourthline.cling.support.model.BrowseFlag;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Stack;
 
+import androidtd.dlnapp.MediaActivities.MyImageViewActivity;
+import androidtd.dlnapp.MediaActivities.MyVideoMusicViewActivity;
+import androidtd.dlnapp.MyObject.MyObject;
+import androidtd.dlnapp.MyObject.MyObjectContainer;
+import androidtd.dlnapp.MyObject.MyObjectDevice;
+import androidtd.dlnapp.MyObject.MyObjectItem;
+import androidtd.dlnapp.Notification;
+
 /**
+ * Allow all the transactions with the server, and manage the upnp connexion.
+ *
  * Created by GroupeProjetDLNApp on 23/12/16.
  */
-
 public class Browser extends Fragment {
 
+    /**
+     * Listener on the status of devices connected on the network
+     */
     private RegistryListener registryListener;
+
+    /**
+     * Cling-Core service managing the devices stack
+     */
     private AndroidUpnpService androidUpnpService;
+
+    /**
+     * Context of MainActivity
+     */
     private Context context;
+
+    /**
+     * Communication with the main activity
+     */
     private Notification notification;
+
+    /**
+     * Create the current list of MyObjects
+     */
     private MyHandler myHandler;
-    // Allow to backtrack in the previous folder when the back key is pressed
+
+
+    /**
+     * Allow to backtrack in the previous folder when the back key is pressed
+     */
     private Stack<MyObject> stack;
 
+    /**
+     * Constantly watch the androidUpnpService
+     */
     private ServiceConnection serviceConnection = new ServiceConnection() {
 
+        /**
+         * Attach the androidUpnpService and set the listeners
+         *
+         * @param className The class name
+         * @param service   The service to watch
+         */
         public void onServiceConnected(ComponentName className, IBinder service) {
             androidUpnpService = (AndroidUpnpService) service;
 
@@ -55,13 +93,21 @@ public class Browser extends Fragment {
             androidUpnpService.getControlPoint().search();
         }
 
+        /**
+         * Detach the androidUpnpService
+         * @param className The class name
+         */
         public void onServiceDisconnected(ComponentName className) {
             androidUpnpService = null;
         }
     };
 
 
-
+    /**
+     * Initialize the parameters when the fragment is attached to the activity
+     *
+     * @param context The activity attached
+     */
     @Override
     public void onAttach(Context context) {
         this.context = context;
@@ -69,6 +115,10 @@ public class Browser extends Fragment {
         super.onAttach(this.context);
     }
 
+    /**
+     * Initialize parameters
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +127,9 @@ public class Browser extends Fragment {
         stack = new Stack<>();
     }
 
+    /**
+     * Delete the link to the activity
+     */
     @Override
     public void onDetach(){
         super.onDetach();
@@ -84,6 +137,9 @@ public class Browser extends Fragment {
         this.notification = null;
     }
 
+    /**
+     * Cut and unbind the connection with the androidUpnpService
+     */
     @Override
     public void onDestroy(){
         super.onDestroy();
@@ -93,6 +149,12 @@ public class Browser extends Fragment {
         context.unbindService(serviceConnection);
     }
 
+    /**
+     * Browse the sons of the MyObject in order to display them
+     * If it is a device, displays its root, and a container its children. If it is an item, open it with a media player
+     *
+     * @param myObject The MyObject selected by the user
+     */
     public void browseDirectory(MyObject myObject) {
         if(myObject instanceof MyObjectDevice && context != null){
             stack.push(myObject);
@@ -108,7 +170,7 @@ public class Browser extends Fragment {
                 myHandler = new MyHandler(((MyObjectContainer) myObject).getService(),((MyObjectContainer) myObject).getId(), BrowseFlag.DIRECT_CHILDREN,this.context);
                 androidUpnpService.getControlPoint().execute(myHandler);
             } else {
-                if(myObject instanceof  MyObjectItem){
+                if(myObject instanceof MyObjectItem){
                     String extension=((MyObjectItem)myObject).getExtension();
                     String type=((MyObjectItem)myObject).getType();
                     Intent intent;
@@ -152,6 +214,9 @@ public class Browser extends Fragment {
         }
     }
 
+    /**
+     * Go back in the DIDL architecture
+     */
     public void goBack(){
         if(stack.size() == 1){
             notification.showDevices();
@@ -163,6 +228,9 @@ public class Browser extends Fragment {
         }
     }
 
+    /**
+     * Refresh the display depending on the type of myObject
+     */
     public void refresh(){
         MyObject myObject;
         switch(stack.size()){
@@ -189,6 +257,11 @@ public class Browser extends Fragment {
         }
     }
 
+    /**
+     * Test if the user is currently seeing the root of a device
+     *
+     * @return true if it is the root
+     */
     public boolean isRoot(){
         return stack.isEmpty();
     }

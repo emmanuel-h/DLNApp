@@ -1,4 +1,4 @@
-package androidtd.dlnapp;
+package androidtd.dlnapp.MediaActivities;
 
 import android.app.Activity;
 import android.content.res.Configuration;
@@ -9,19 +9,40 @@ import android.view.View;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
+import androidtd.dlnapp.R;
+
 /**
+ * Display a custom view for music or video media
+ *
  * Created by GroupeProjetDLNApp on 26/12/2016.
  */
-
 public class MyVideoMusicViewActivity extends Activity{
 
+    /**
+     * VideoView in the xml file which contain the current media displayed
+     */
     VideoView videoView;
 
+    /**
+     * The url of the media displayed
+     */
     String videoUrl;
+
+    /**
+     * Type of the media : audio or video
+     */
     String type;
 
+    /**
+     * Orientation of the mobile phone
+     */
     boolean landscape = false;
 
+    /**
+     * Set the videoview with the media controller
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -54,6 +75,11 @@ public class MyVideoMusicViewActivity extends Activity{
         });
     }
 
+    /**
+     * Display some features when the user press on the screen
+     *
+     * @param hasFocus
+     */
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
@@ -70,6 +96,11 @@ public class MyVideoMusicViewActivity extends Activity{
         }
     }
 
+    /**
+     * Manage the change in the mobile phone's orientation
+     *
+     * @param config
+     */
     @Override
     public void onConfigurationChanged(Configuration config){
         super.onConfigurationChanged(config);

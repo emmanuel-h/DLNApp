@@ -15,6 +15,11 @@ import org.fourthline.cling.model.meta.Service;
 
 import java.util.ArrayList;
 
+import androidtd.dlnapp.MyObject.MyObject;
+import androidtd.dlnapp.MyObject.MyObjectDevice;
+import androidtd.dlnapp.MyObject.MyObjectItem;
+import androidtd.dlnapp.UpnpConnection.Browser;
+
 /**
  * Created by GroupeProjetDLNApp on 23/12/16.
  */
@@ -31,10 +36,12 @@ public class MainActivity extends AppCompatActivity implements Notification,Swip
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Set the app logo on the menu
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setLogo(R.mipmap.ic_logo_inapp);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
-        
+
         listView = (ListView) findViewById(R.id.liste);
 
         // Allow to refresh a view

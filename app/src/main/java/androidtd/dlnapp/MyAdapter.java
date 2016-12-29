@@ -14,15 +14,33 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import androidtd.dlnapp.MyObject.MyObject;
+import androidtd.dlnapp.MyObject.MyObjectDevice;
+import androidtd.dlnapp.UpnpConnection.Browser;
+
 /**
+ * Manage the array of MyObject and match MyObject's properties with xml properties
+ *
  * Created by GroupeProjetDLNApp on 23/12/16.
  */
-
 public class MyAdapter extends ArrayAdapter<MyObject> {
 
+    /**
+     * Context of MainActivity
+     */
     Context context;
+
+    /**
+     * The Browse fragment
+     */
     Browser browser;
 
+    /**
+     * Constructeur
+     * 
+     * @param context
+     * @param myObjects
+     */
     public MyAdapter(Context context,ArrayList<MyObject> myObjects) {
         super(context,0,myObjects);
         this.context = context;
