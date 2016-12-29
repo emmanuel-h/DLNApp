@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">DLNApp</string>
     <string name="action_refresh">Refresh</string>
+    <string name="choose_app">Choose an application to open the media</string>
 </resources>

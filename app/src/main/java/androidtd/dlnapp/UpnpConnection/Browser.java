@@ -25,6 +25,7 @@ import androidtd.dlnapp.MyObject.MyObjectContainer;
 import androidtd.dlnapp.MyObject.MyObjectDevice;
 import androidtd.dlnapp.MyObject.MyObjectItem;
 import androidtd.dlnapp.Notification;
+import androidtd.dlnapp.R;
 
 /**
  * Allow all the transactions with the server, and manage the upnp connexion.
@@ -189,7 +190,7 @@ public class Browser extends Fragment {
                         // If an application can open the media, user can choose it
                         intent = new Intent(Intent.ACTION_VIEW,location);
                         intent.setDataAndType(location,extension);
-                        Intent chooser = Intent.createChooser(intent,"Choose an application to open the media");
+                        Intent chooser = Intent.createChooser(intent,getString(R.string.choose_app));
                         if(intent.resolveActivity(context.getPackageManager())!=null){
                             startActivity(chooser);
                         } else {
